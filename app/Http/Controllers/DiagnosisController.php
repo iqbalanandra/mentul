@@ -11,8 +11,8 @@ class DiagnosisController extends Controller
 {
     public function index()
     {
-        $gejalas = Gejala::all(); // Ambil semua data gejala
-        return view('diagnosis', compact('gejalas')); // Kirim ke view
+        $gejalas = Gejala::paginate(9); // Batasi 9 gejala per halaman
+        return view('welcome', compact('gejalas'));
     }
     public function diagnosis(Request $request)
     {
