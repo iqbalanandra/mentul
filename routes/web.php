@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DiagnosisController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,10 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [DiagnosisController::class, 'index']);
 
-Route::get('/telwen', function () {
-    return view('telwen');
-});
+
+Route::post('/diagnosis', [DiagnosisController::class, 'diagnosis']);
