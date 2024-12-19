@@ -16,7 +16,7 @@
         <x-navbar></x-navbar>
         
         <!-- Konten utama -->
-        <main>
+        <main class="bg-gradient-to-b from-indigo-900 to-gray-900">
             <div class="mx-auto max-w-7xl px-4 py-1 sm:px-6 lg:px-8">
                 {{$slot}}
             </div>

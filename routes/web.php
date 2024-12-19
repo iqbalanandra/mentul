@@ -24,3 +24,11 @@ Route::get('/', [DiagnosisController::class, 'index']);
 
 
 Route::post('/diagnosis', [DiagnosisController::class, 'diagnosis']);
+
+
+
+Route::get('/quiz/start', [DiagnosisController::class, 'startQuiz'])->name('quiz.start');
+Route::post('/quiz/answer', [DiagnosisController::class, 'saveAnswer'])->name('quiz.answer');
+Route::get('/quiz/result', [DiagnosisController::class, 'showResult'])->name('quiz.result');
+Route::get('/quiz/question/{index}', [DiagnosisController::class, 'showQuestion'])->name('quiz.question');
+
