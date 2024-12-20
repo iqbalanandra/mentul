@@ -10,7 +10,6 @@
                         <li class="p-4 border rounded-lg shadow-sm">
                             <h3 class="text-lg font-bold">{{ $hasil['penyakit'] }}</h3>
                             <p class="text-gray-600">Kepercayaan: {{ number_format($hasil['cf'] * 100, 2, ',', '.') }}%</p>
-
                             <p class="text-gray-500">{{ $hasil['deskripsi'] }}</p>
                         </li>
                     @endforeach
