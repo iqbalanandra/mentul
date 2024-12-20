@@ -39,22 +39,22 @@
                     <h3 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">Tim Pengembang</h3>
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                         <div class="bg-white rounded-lg shadow-xl p-6 text-center">
-                            <img class="h-24 w-24 mx-auto rounded-full border-4 border-blue-500" src="{{ asset('uploads/jessen.jpg') }}" alt="Jessen">
+                            <img class="h-24 w-24 mx-auto rounded-full border-4 border-blue-500" src="{{ asset('jessen.png') }}" alt="Jessen">
                             <h4 class="mt-4 font-bold text-gray-800 text-xl">Jessen Ramadeksa Allen</h4>
                             <p class="text-sm text-gray-600">Frontend Developer</p>
                         </div>
                         <div class="bg-white rounded-lg shadow-xl p-6 text-center">
-                            <img class="h-24 w-24 mx-auto rounded-full border-4 border-blue-500" src="{{ asset('uploads/iqbal.jpg') }}" alt="Iqbal">
+                            <img class="h-24 w-24 mx-auto rounded-full border-4 border-blue-500" src="{{ asset('iqbal.JPG') }}" alt="Iqbal">
                             <h4 class="mt-4 font-bold text-gray-800 text-xl">Muhammad Iqbal Anandra</h4>
                             <p class="text-sm text-gray-600">Backend Developer</p>
                         </div>
                         <div class="bg-white rounded-lg shadow-xl p-6 text-center">
-                            <img class="h-24 w-24 mx-auto rounded-full border-4 border-blue-500" src="{{ asset('uploads/elsa.jpg') }}" alt="Elsa">
+                            <img class="h-24 w-24 mx-auto rounded-full border-4 border-blue-500" src="{{ asset('elsa.png') }}" alt="Elsa">
                             <h4 class="mt-4 font-bold text-gray-800 text-xl">Elsa Dwi Agresty</h4>
                             <p class="text-sm text-gray-600">UI/UX Designer</p>
                         </div>
                         <div class="bg-white rounded-lg shadow-xl p-6 text-center">
-                            <img class="h-24 w-24 mx-auto rounded-full border-4 border-blue-500" src="{{ asset('uploads/vitto.jpg') }}" alt="Vitto">
+                            <img class="h-24 w-24 mx-auto rounded-full border-4 border-blue-500" src="{{ asset('vitto.png') }}" alt="Vitto">
                             <h4 class="mt-4 font-bold text-gray-800 text-xl">Nicholas Vitto Adrianto</h4>
                             <p class="text-sm text-gray-600">Project Manager</p>
                         </div>
