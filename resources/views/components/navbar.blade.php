@@ -3,26 +3,25 @@
         <div class="flex h-16 items-center justify-between">
             <!-- Logo -->
             <div class="flex items-center">
-                <a href="/" class="flex items-center">
-                    <img class="h-8 w-auto" src="#" alt="Logo" />
-                    <span class="ml-2 text-white font-bold text-lg">Mentul</span>
+                <a href="{{route('home')}}" class="flex items-center">
+                    <img class="h-8 w-auto" src="{{asset('Logo.png')}}" alt="Logo" />
                 </a>
             </div>
 
             <!-- Desktop Navigation -->
             <div class="hidden md:block">
                 <div class="ml-10 flex items-baseline space-x-6">
-                    <a href="/"
+                    <a href="{{route('home')}}"
                         class="{{ request()->is('/') ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} flex items-center rounded-md px-3 py-2 text-sm font-medium">
                         Home
                     </a>
-                    <a href="/about"
+                    <a href="{{route('about')}}"
                         class="{{ request()->is('about') ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} flex items-center rounded-md px-3 py-2 text-sm font-medium">
                         About
                     </a>
-                    <a href="/contact"
-                        class="{{ request()->is('contact') ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} flex items-center rounded-md px-3 py-2 text-sm font-medium">
-                        Contacts
+                    <a href="{{route('quiz.start')}}"
+                        class="bg-blue-500 text-white hover:bg-indigo-600 hover:text-white flex items-center rounded-md px-3 py-2 text-sm font-medium">
+                        Mulai Kuis
                     </a>
                 </div>
             </div>
@@ -48,17 +47,17 @@
     <!-- Mobile Navigation -->
     <div x-show="isOpen" class="md:hidden">
         <div class="space-y-1 px-2 pb-3 pt-2 sm:px-3">
-            <a href="/"
-                class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">
+            <a href="{{route('home')}}"
+                class="block rounded-md px-3 py-2 text-base font-medium {{ request()->is('/') ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }}">
                 Home
             </a>
-            <a href="/about"
-                class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">
+            <a href="{{route('about')}}"
+                class="block rounded-md px-3 py-2 text-base font-medium {{ request()->is('about') ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }}">
                 About
             </a>
             <a href="/contact"
-                class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">
-                Contacts
+                class="block rounded-md px-3 py-2 text-base font-medium {{ request()->is('contact') ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }}">
+                Mulai Kuis
             </a>
         </div>
     </div>
