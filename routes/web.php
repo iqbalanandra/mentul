@@ -32,3 +32,10 @@ Route::post('/quiz/answer', [DiagnosisController::class, 'saveAnswer'])->name('q
 Route::get('/quiz/result', [DiagnosisController::class, 'showResult'])->name('quiz.result');
 Route::get('/quiz/question/{index}', [DiagnosisController::class, 'showQuestion'])->name('quiz.question');
 
+Route::get('/about', function () {
+    return view('about');
+});
+
+Route::get('/', function () {
+    return view('welcome');
+});

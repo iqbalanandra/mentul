@@ -3,7 +3,7 @@
         <div class="flex h-16 items-center justify-between">
             <!-- Logo -->
             <div class="flex items-center">
-                <a href="/" class="flex items-center">
+                <a href="/welcome" class="flex items-center">
                     <img class="h-8 w-auto" src="#" alt="Logo" />
                     <span class="ml-2 text-white font-bold text-lg">Mentul</span>
                 </a>
@@ -12,8 +12,8 @@
             <!-- Desktop Navigation -->
             <div class="hidden md:block">
                 <div class="ml-10 flex items-baseline space-x-6">
-                    <a href="/"
-                        class="{{ request()->is('/') ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} flex items-center rounded-md px-3 py-2 text-sm font-medium">
+                    <a href="/welcome"
+                        class="{{ request()->is('welcome') ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} flex items-center rounded-md px-3 py-2 text-sm font-medium">
                         Home
                     </a>
                     <a href="/about"
@@ -48,7 +48,7 @@
     <!-- Mobile Navigation -->
     <div x-show="isOpen" class="md:hidden">
         <div class="space-y-1 px-2 pb-3 pt-2 sm:px-3">
-            <a href="/"
+            <a href="/welcome"
                 class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">
                 Home
             </a>

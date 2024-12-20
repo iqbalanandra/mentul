@@ -1,4 +1,3 @@
-<!-- resources/views/components/user-layout.blade.php -->
 <!DOCTYPE html>
 <html lang="en" class="h-full bg-gray-100">
 
@@ -18,7 +17,7 @@
         <!-- Konten utama -->
         <main class="bg-gradient-to-b from-indigo-900 to-gray-900">
             <div class="mx-auto max-w-7xl px-4 py-1 sm:px-6 lg:px-8">
-                {{$slot}}
+                @yield('content')
             </div>
         </main>
     </div>
