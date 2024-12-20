@@ -30,24 +30,23 @@ class DiagnosisController extends Controller
         $hasilDiagnosis = [];
 
         foreach ($penyakitList as $penyakit) {
-            $cfGabungan = 0;
-            $gejalaTerpenuhi = 0;
-            $totalGejalaAturan = 0;
-
+            $cfGabungan = 0; // CF gabungan awal
+            $gejalaTerpenuhi = 0; // Counter untuk jumlah gejala terpenuhi
+        
             foreach ($aturanList as $aturan) {
                 if ($aturan->penyakit_id == $penyakit->id) {
                     $gejalaRule = explode(',', $aturan->kode_gejala);
-                    $totalGejalaAturan += count($gejalaRule);
-
+        
                     foreach ($gejalaRule as $kodeGejala) {
                         if (in_array($kodeGejala, $gejalaInput)) {
-                            $gejalaTerpenuhi++;
-                            $mb = 0.8; // Nilai MB default
-                            $md = 0.2; // Nilai MD default
-                            $cfUser = $cfUserInput[$kodeGejala] ?? 1;
-
-                            $cf = ($mb - $md) * $cfUser;
-
+                            $gejalaTerpenuhi++; // Tambah jumlah gejala terpenuhi
+                            $mb = 0.8; // Nilai MB (pakar) default
+                            $md = 0.2; // Nilai MD (pakar) default
+                            $cfUser = $cfUserInput[$kodeGejala] ?? 1; // Nilai CF dari pengguna
+        
+                            $cf = ($mb - $md) * $cfUser; // CF[H,E]
+        
+                            // Kombinasi CF menggunakan rumus standar
                             if ($cfGabungan == 0) {
                                 $cfGabungan = $cf;
                             } else {
@@ -57,15 +56,29 @@ class DiagnosisController extends Controller
                     }
                 }
             }
-
+        
+            // Jika hanya satu gejala terpenuhi, atur CF menjadi 25% (0.25)
+            if ($gejalaTerpenuhi === 1) {
+                $cfGabungan = 0.25;
+            }
+        
+            // Jika gejala sesuai dengan aturan, set CF menjadi 100%
+            if ($gejalaTerpenuhi == count(explode(',', $aturan->kode_gejala))) {
+                $cfGabungan = 1.0; // Kepercayaan 100% jika semua gejala sesuai
+            }
+        
+            // Normalisasi hasil ke rentang [0, 1] (maksimal 100%)
+            $cfGabungan = min(1, max(0, $cfGabungan));
+        
             if ($cfGabungan > 0) {
                 $hasilDiagnosis[] = [
                     'penyakit' => $penyakit->nama,
-                    'cf' => round($cfGabungan * 100, 2),
+                    'cf' => round($cfGabungan * 100, 2), // Ubah ke persen
                     'deskripsi' => $penyakit->deskripsi,
                 ];
             }
         }
+           
 
         // Filter hasil dengan CF lebih dari 90%
         $hasilDiagnosis = array_filter($hasilDiagnosis, fn($hasil) => $hasil['cf'] > 90);
@@ -114,57 +127,64 @@ class DiagnosisController extends Controller
     }
 
     public function showResult()
-    {
-        $answers = session('quiz_answers', []);
-        $aturanList = Aturan::all();
-        $penyakitList = Penyakit::all();
+{
+    $answers = session('quiz_answers', []); // Ambil jawaban dari sesi
+    $aturanList = Aturan::all();
+    $penyakitList = Penyakit::all();
 
-        $hasilDiagnosis = [];
+    $hasilDiagnosis = [];
 
-        foreach ($penyakitList as $penyakit) {
-            $cfGabungan = 0;
-            $gejalaTerpenuhi = 0;
-            $totalGejalaAturan = 0;
+    foreach ($penyakitList as $penyakit) {
+        $cfGabungan = 0;
+        $gejalaTerpenuhi = 0;
 
-            foreach ($aturanList as $aturan) {
-                if ($aturan->penyakit_id == $penyakit->id) {
-                    $gejalaRule = explode(',', $aturan->kode_gejala);
-                    $totalGejalaAturan += count($gejalaRule);
+        foreach ($aturanList as $aturan) {
+            if ($aturan->penyakit_id == $penyakit->id) {
+                $gejalaRule = explode(',', $aturan->kode_gejala);
 
-                    foreach ($gejalaRule as $kodeGejala) {
-                        if (isset($answers[$kodeGejala])) {
-                            $gejalaTerpenuhi++;
-                            $cfUser = $answers[$kodeGejala];
-                            $mb = 0.8;
-                            $md = 0.2;
+                foreach ($gejalaRule as $kodeGejala) {
+                    if (isset($answers[$kodeGejala])) { // Gunakan jawaban dari sesi
+                        $gejalaTerpenuhi++;
+                        $cfUser = $answers[$kodeGejala];
+                        $mb = 0.8; // Nilai MB default
+                        $md = 0.2; // Nilai MD default
 
-                            $cf = ($mb - $md) * $cfUser;
+                        $cf = ($mb - $md) * $cfUser;
 
-                            if ($cfGabungan == 0) {
-                                $cfGabungan = $cf;
-                            } else {
-                                $cfGabungan = $cfGabungan + ($cf * (1 - abs($cfGabungan)));
-                            }
+                        if ($cfGabungan == 0) {
+                            $cfGabungan = $cf;
+                        } else {
+                            $cfGabungan = $cfGabungan + ($cf * (1 - abs($cfGabungan)));
                         }
                     }
                 }
             }
-
-            if ($cfGabungan > 0) {
-                $hasilDiagnosis[] = [
-                    'penyakit' => $penyakit->nama,
-                    'cf' => round($cfGabungan * 100, 2),
-                    'deskripsi' => $penyakit->deskripsi,
-                ];
-            }
         }
 
-        // Filter hasil dengan CF lebih dari 90%
-        $hasilDiagnosis = array_filter($hasilDiagnosis, fn($hasil) => $hasil['cf'] > 90);
+         // Periksa jika semua gejala sesuai dengan aturan
+        if ($gejalaTerpenuhi == count(explode(',', $aturan->kode_gejala))) {
+            $cfGabungan = 1.0; // Set ke 100%
+        } else {
+            $cfGabungan = min(1, max(0, $cfGabungan));
+        }
 
-        // Mengurutkan hasil dari CF terbesar
-        usort($hasilDiagnosis, fn($a, $b) => $b['cf'] <=> $a['cf']);
+        if ($cfGabungan > 0) {
+            $hasilDiagnosis[] = [
+                'penyakit' => $penyakit->nama,
+                'cf' => round($cfGabungan * 100, 2), // Ubah ke persen
+                'deskripsi' => $penyakit->deskripsi,
+            ];
+        }
+    }
 
-        return view('quiz.result', compact('hasilDiagnosis'));
+    // Filter hasil dengan CF lebih dari 90%
+    $hasilDiagnosis = array_filter($hasilDiagnosis, fn($hasil) => $hasil['cf'] > 90);
+
+    // Urutkan hasil berdasarkan CF terbesar
+    usort($hasilDiagnosis, fn($a, $b) => $b['cf'] <=> $a['cf']);
+
+    return view('quiz.result', compact('hasilDiagnosis'));
+
+        
     }
 }
