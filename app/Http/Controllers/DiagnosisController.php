@@ -57,16 +57,6 @@ class DiagnosisController extends Controller
                 }
             }
         
-            // Jika hanya satu gejala terpenuhi, atur CF menjadi 25% (0.25)
-            if ($gejalaTerpenuhi === 1) {
-                $cfGabungan = 0.25;
-            }
-        
-            // Jika gejala sesuai dengan aturan, set CF menjadi 100%
-            if ($gejalaTerpenuhi == count(explode(',', $aturan->kode_gejala))) {
-                $cfGabungan = 1.0; // Kepercayaan 100% jika semua gejala sesuai
-            }
-        
             // Normalisasi hasil ke rentang [0, 1] (maksimal 100%)
             $cfGabungan = min(1, max(0, $cfGabungan));
         
@@ -161,13 +151,6 @@ class DiagnosisController extends Controller
             }
         }
 
-         // Periksa jika semua gejala sesuai dengan aturan
-        if ($gejalaTerpenuhi == count(explode(',', $aturan->kode_gejala))) {
-            $cfGabungan = 1.0; // Set ke 100%
-        } else {
-            $cfGabungan = min(1, max(0, $cfGabungan));
-        }
-
         if ($cfGabungan > 0) {
             $hasilDiagnosis[] = [
                 'penyakit' => $penyakit->nama,
@@ -178,7 +161,7 @@ class DiagnosisController extends Controller
     }
 
     // Filter hasil dengan CF lebih dari 90%
-    $hasilDiagnosis = array_filter($hasilDiagnosis, fn($hasil) => $hasil['cf'] > 90);
+    $hasilDiagnosis = array_filter($hasilDiagnosis, fn($hasil) => $hasil['cf'] > 95);
 
     // Urutkan hasil berdasarkan CF terbesar
     usort($hasilDiagnosis, fn($a, $b) => $b['cf'] <=> $a['cf']);
